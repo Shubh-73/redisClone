@@ -3,20 +3,29 @@ package main
 import (
 	"fmt"
 	"github.com/codecrafters-io/redis-starter-go/app/server"
-	"log"
+	"net"
+	"os"
 )
 
 func main() {
 	// You can use print statements as follows for debugging, they'll be visible when running tests.
 	fmt.Println("Logs from your program will appear here!")
 
-	//Uncomment this block to pass the first stage
-	listener, err := server.BindToPort(":6379")
-	conn, err := listener.Accept()
-	if err != nil {
-		// Handle connection acceptance error
-		log.Printf("failed to accept connection: %v\n", err)
+	listener, err := net.Listen("tcp", ":6379")
 
+	if err != nil {
+		fmt.Printf(err)
+		os.Exit(1)
 	}
-	server.HandleConnection(conn)
+	defer listener.Close()
+
+	for {
+		conn, err := listener.Accept()
+		if err != nil {
+			fmt.Print("error accepting connection")
+			continue
+		}
+
+		go server.HandleConnection(conn)
+	}
 }
