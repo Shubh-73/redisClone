@@ -5,11 +5,13 @@ import (
 	"net"
 )
 
-func BindToPort() (net.Listener, error) {
-	listener, err := net.Listen("tcp", "0.0.0.0:6379")
+func BindToPort(port string) (net.Listener, error) {
+	// Attempt to listen on the specified address and port
+	listener, err := net.Listen("tcp", port)
 	if err != nil {
-		return nil, fmt.Errorf("failed to bind to port: %w", err)
+		// Return nil and the error if binding fails
+		return nil, fmt.Errorf("failed to bind to port %s: %w", port, err)
 	}
-
+	// Return the listener and nil error if successful
 	return listener, nil
 }
