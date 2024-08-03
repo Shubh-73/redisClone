@@ -26,7 +26,7 @@ func HandleConnection(conn net.Conn) {
 	// Check if the received message is "PING"
 	if received == "PING" {
 		// Write "PONG" response back to the client
-		_, err := conn.Write([]byte("PONG"))
+		_, err := conn.Write([]byte("+PONG\r\n"))
 		if err != nil {
 			log.Printf("failed to write to connection: %v\n", err)
 		}
