@@ -25,6 +25,6 @@ func main() {
 			continue
 		}
 
-		go server.HandleConnection(conn)
+		server.HandleConnection(conn)
 	}
 }
