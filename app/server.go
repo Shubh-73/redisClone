@@ -2,11 +2,8 @@ package main
 
 import (
 	"fmt"
-	"net"
-	"os"
-	// Uncomment this block to pass the first stage
-	// "net"
-	// "os"
+	"github.com/codecrafters-io/redis-starter-go/app/server"
+	"log"
 )
 
 func main() {
@@ -14,15 +11,12 @@ func main() {
 	fmt.Println("Logs from your program will appear here!")
 
 	//Uncomment this block to pass the first stage
+	listener, err := server.BindToPort(":6379")
+	conn, err := listener.Accept()
+	if err != nil {
+		// Handle connection acceptance error
+		log.Printf("failed to accept connection: %v\n", err)
 
-	l, err := net.Listen("tcp", "0.0.0.0:6379")
-	if err != nil {
-		fmt.Println("Failed to bind to port 6379")
-		os.Exit(1)
 	}
-	_, err = l.Accept()
-	if err != nil {
-		fmt.Println("Error accepting connection: ", err.Error())
-		os.Exit(1)
-	}
+	server.HandleConnection(conn)
 }
