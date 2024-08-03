@@ -12,26 +12,25 @@ func HandleConnection(conn net.Conn) {
 
 	reader := bufio.NewReader(conn)
 
-	for{
+	for {
 
 		data, err := reader.ReadString('\n')
-		if err != nil{
+		if err != nil {
 			log.Println("error while reading from connection: %v\n", err)
 			return
 		}
 
 		commands := strings.Split(strings.TrimSpace(data), "\n")
-		for _, command := range commands{
+		for _, command := range commands {
 			if command == "PING" {
 				_, err := conn.Write([]byte("PONG\r\n"))
-				if err != nil{
+				if err != nil {
 					log.Println("error while writing to connection: %v\n", err)
 					return
 				}
-			}
-			else{
+			} else {
 				_, err := conn.Write([]byte("command unknown: " + command + "\r\n"))
-				if err != nil{
+				if err != nil {
 					log.Println("error while writing to connection: %v\n", err)
 					return
 				}
